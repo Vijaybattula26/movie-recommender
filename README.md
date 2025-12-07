@@ -2,8 +2,8 @@
 
 > **A Full-Stack AI Application that recommends movies based on Content Similarity and User Preferences.**
 
-![Project Banner](https://via.placeholder.com/1000x300?text=Movie+Recommendation+System+Dashboard)
-*(Replace this link with a screenshot of your actual dashboard later)*
+![Project Banner](![Header](https://capsule-render.vercel.app/api?type=waving&color=141414&height=300&section=header&text=Movie%20Recommender%20System&fontSize=70&fontColor=E50914&fontAlign=50&fontAlignY=40&desc=Hybrid%20AI%20Engine%20•%20React%20•%20FastAPI%20•%20PostgreSQL&descSize=20&descAlign=50&descAlignY=60)
+
 
 ## 📌 Project Overview
 This project is a complete software product, not just a script. It solves the problem of "What to watch next?" using a **Hybrid Machine Learning Engine**. 
