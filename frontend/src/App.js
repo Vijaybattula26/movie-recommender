@@ -24,11 +24,15 @@ function App() {
   const [userRating, setUserRating] = useState(0);
 
   const TMDB_API_KEY = "7598349f3e80939b640e1535ed5fd2cf";
+  
+  // --- CLOUD API URL (Used everywhere now) ---
+  const API_URL = "https://movie-recommender-jbxp.onrender.com";
 
   // --- 1. AUTH FLOW ---
   const handleSignup = async () => {
     try {
-      const res = await axios.post('http://127.0.0.1:8000/signup', { email, password });
+      // FIX: Uses Cloud URL
+      const res = await axios.post(`${API_URL}/signup`, { email, password });
       setUser({ id: res.data.user_id, email }); 
       setView('onboarding'); 
     } catch (err) { setAuthError("Signup failed. Email may be taken."); }
@@ -36,7 +40,8 @@ function App() {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post('http://127.0.0.1:8000/login', { email, password });
+      // FIX: Uses Cloud URL
+      const res = await axios.post(`${API_URL}/login`, { email, password });
       setUser({ id: res.data.user_id, email });
       if (!res.data.genres) setView('onboarding');
       else { 
@@ -56,7 +61,8 @@ function App() {
   };
 
   const submitGenres = async () => {
-    await axios.post('http://127.0.0.1:8000/update_genres', {
+    // FIX: Uses Cloud URL
+    await axios.post(`${API_URL}/update_genres`, {
       user_id: user.id,
       genres: selectedGenres.join(",")
     });
@@ -67,7 +73,8 @@ function App() {
   // --- 3. HYBRID RECOMMENDATIONS ---
   const fetchHybridRecs = async (userId) => {
     try {
-      const res = await axios.get(`http://127.0.0.1:8000/recommend_hybrid/${userId}`);
+      // FIX: Uses Cloud URL
+      const res = await axios.get(`${API_URL}/recommend_hybrid/${userId}`);
       const rawRecs = res.data.recommendations;
       setRecReason(res.data.type); 
 
@@ -94,7 +101,8 @@ function App() {
   const handleSearch = async () => {
     setRecommendations([]); setLoading(true);
     try {
-      const res = await axios.get(`http://127.0.0.1:8000/recommend/${movie}`);
+      // FIX: Uses Cloud URL
+      const res = await axios.get(`${API_URL}/recommend/${movie}`);
       const moviesWithPosters = [];
       for (const rec of res.data.recommendations) {
         const posterUrl = await fetchPoster(rec.id);
@@ -104,11 +112,12 @@ function App() {
     } catch (err) { alert("Movie not found!"); } finally { setLoading(false); }
   };
 
-  // --- SAFE MODE CLICK HANDLER (FIXED) ---
+  // --- SAFE MODE CLICK HANDLER ---
   const handleMovieClick = async (movie) => {
-    // 1. Log History (Fail Silently if Server is Down)
+    // 1. Log History (Track Click)
     if (user) {
-      axios.post('http://127.0.0.1:8000/log_history', { user_id: user.id, movie_id: movie.id })
+      // FIX: Uses Cloud URL
+      axios.post(`${API_URL}/log_history`, { user_id: user.id, movie_id: movie.id })
            .catch(err => console.log("Logging skipped, opening movie anyway."));
     }
 
@@ -125,7 +134,8 @@ function App() {
   const submitRating = async (rateValue) => {
     setUserRating(rateValue);
     if (!user) return;
-    await axios.post('http://127.0.0.1:8000/rate', { user_id: user.id, movie_id: selectedMovie.id, rating: rateValue });
+    // FIX: Uses Cloud URL
+    await axios.post(`${API_URL}/rate`, { user_id: user.id, movie_id: selectedMovie.id, rating: rateValue });
     alert("Rating Saved! We will recommend similar movies next time.");
     fetchHybridRecs(user.id);
   };
@@ -222,7 +232,6 @@ function App() {
                     <div className="stat-item"><span className="label">Release</span><span className="value">{selectedMovie.release_date}</span></div>
                   </div>
                   
-                  {/* Cast Display (Restored) */}
                   <h3 style={{marginTop: '20px'}}>Top Cast</h3>
                   <div className="cast-grid">
                     {selectedMovie.credits?.cast.slice(0, 5).map(actor => (
