@@ -2,12 +2,14 @@
    1. GLOBAL RESET & FONTS
    ========================================= */
 * { box-sizing: border-box; }
+
 body {
   margin: 0; padding: 0;
   background-color: #141414; color: #ffffff;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
+
 .App { min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
 
 /* =========================================
@@ -70,16 +72,49 @@ body {
 .search-box { width: 500px; padding: 15px 25px; font-size: 1.2rem; border-radius: 30px 0 0 30px; border: none; outline: none; }
 .search-btn { padding: 15px 35px; font-size: 1.2rem; background-color: #e50914; color: white; border: none; border-radius: 0 30px 30px 0; cursor: pointer; font-weight: bold; }
 
-/* MOVIE GRID */
+/* --- MOVIE GRID (UPDATED TO FIX 5-ITEMS LAYOUT) --- */
 .hybrid-section { text-align: left; margin-bottom: 40px; border-bottom: 1px solid #333; }
 .hybrid-section h2 { font-size: 2rem; margin-bottom: 20px; padding-left: 40px; }
 .rec-reason { font-size: 1rem; color: #46d369; font-weight: normal; margin-left: 10px; }
 
-.movie-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; padding-bottom: 50px; }
-.movie-card { width: 220px; background-color: #2f2f2f; border-radius: 8px; cursor: pointer; transition: transform 0.3s; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-.movie-card:hover { transform: scale(1.08); box-shadow: 0 10px 20px rgba(0,0,0,0.8); z-index: 10; }
-.movie-poster { width: 100%; height: 330px; object-fit: cover; }
-.movie-card h3 { font-size: 1.1rem; margin: 15px 10px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #e5e5e5; }
+.movie-grid {
+  display: grid;
+  /* This forces exactly 5 items per row */
+  grid-template-columns: repeat(5, 1fr); 
+  gap: 20px;
+  padding: 0 40px 50px 40px;
+  width: 100%;
+}
+
+.movie-card {
+  width: 100%; /* Let the grid control width */
+  background-color: #2f2f2f;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.movie-card:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.8); z-index: 10; }
+
+.movie-poster {
+  width: 100%;
+  height: 320px; /* Consistent height */
+  object-fit: cover;
+}
+
+.movie-card h3 { 
+  font-size: 1rem; 
+  margin: 15px 10px; 
+  text-align: center; 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  color: #e5e5e5; 
+}
+
+.error-msg { color: #ffcc00; font-weight: bold; }
 
 /* =========================================
    4. POPUP MODAL
@@ -98,12 +133,16 @@ body {
 .stats-grid { display: flex; gap: 40px; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 20px; }
 .stat-item .label { display: block; font-size: 0.85rem; color: #777; text-transform: uppercase; margin-bottom: 5px; }
 .stat-item .value { font-size: 1.3rem; font-weight: bold; }
+.green-text { color: #46d369; }
+
+.genres { display: flex; flex-wrap: wrap; gap: 10px; }
+.genre-badge { background: #333; padding: 5px 12px; border-radius: 15px; font-size: 0.85rem; border: 1px solid #555; }
 
 /* CAST */
 .cast-grid { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; }
-.actor-card { text-align: center; width: 80px; }
+.actor-card { text-align: center; width: 80px; flex-shrink: 0; }
 .actor-img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid #e50914; margin-bottom: 8px; }
-.actor-card p { font-size: 0.8rem; line-height: 1.2; }
+.actor-card p { font-size: 0.8rem; line-height: 1.2; margin: 0; color: #ddd; }
 
 /* RATINGS */
 .rating-section { font-size: 2rem; margin-bottom: 20px; }
@@ -112,4 +151,15 @@ body {
 .star:hover { color: #f40612; transform: scale(1.2); }
 
 @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-@media (max-width: 768px) { .modal-body { flex-direction: column; } .modal-poster { width: 100%; height: 300px; } .modal-info { padding: 20px; } }
+
+/* RESPONSIVE LAYOUT */
+@media (max-width: 1024px) {
+  .movie-grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 768px) { 
+  .modal-body { flex-direction: column; } 
+  .modal-poster { width: 100%; height: 300px; } 
+  .modal-info { padding: 20px; } 
+  .movie-grid { grid-template-columns: repeat(2, 1fr); padding: 20px; }
+  .search-box { width: 100%; }
+}
