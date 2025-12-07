@@ -71,7 +71,7 @@ The system includes secure login, a Netflix-style dark mode interface, and real-
 | **1. Data Preprocessing** | Combine overview, genres, keywords, cast, and crew into a unified "tag". |
 | **2. Vectorization** | Convert text into numerical vectors using CountVectorizer. |
 | **3. Similarity Calculation** | Compute cosine similarity between all movie vectors. |
-| **4. Hybrid Recommendation Logic** |  
+| **4. Hybrid Recommendation Logic** | Combine Content-Based and Collaborative Filtering to generate personalized movie suggestions. New users receive genre-based recommendations (Cold Start solution), while active users get similarity-based results derived from their watch history and ratings. | 
    - **New User:** Filter movies by preferred genres.  
    - **Active User:** Recommend based on similarity to previously rated movies. |
 
